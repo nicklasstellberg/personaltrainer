@@ -43,11 +43,13 @@ function Traininglist() {
 
   const deleteTraining = (link) => {
     console.log("DELETE FUNKTIO");
-    fetch(link, { method: "DELETE" }).then((response) => {
-      if (response.ok) {
-        fetchTrainings();
-      }
-    });
+    if (window.confirm("Are you sure?")) {
+      fetch(link, { method: "DELETE" }).then((response) => {
+        if (response.ok) {
+          fetchTrainings();
+        }
+      });
+    }
   };
 
   const updateTraining = (updateTraining, link) => {

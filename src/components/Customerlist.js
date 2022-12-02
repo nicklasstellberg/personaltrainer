@@ -42,12 +42,14 @@ function Customerlist() {
   };
 
   const deleteCustomer = (link) => {
-    console.log("DELETE FUNKTIO");
-    fetch(link, { method: "DELETE" }).then((response) => {
-      if (response.ok) {
-        fetchCustomers();
-      }
-    });
+    if (window.confirm("Are you sure?")) {
+      console.log("DELETE FUNKTIO");
+      fetch(link, { method: "DELETE" }).then((response) => {
+        if (response.ok) {
+          fetchCustomers();
+        }
+      });
+    }
   };
 
   const updateCustomer = (updateCustomer, link) => {
