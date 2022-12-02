@@ -1,23 +1,40 @@
-import logo from './logo.svg';
-import './App.css';
+import "./App.css";
+import { AppBar } from "@mui/material";
+import Toolbar from "@mui/material/Toolbar";
+import Typography from "@mui/material/Typography";
+import Customerlist from "./components/Customerlist";
+import Traininglist from "./components/Traininglist";
+import { BrowserRouter as Router,Routes, Route, Link } from 'react-router-dom';
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <AppBar position="static">
+        <Toolbar>
+          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+            Personal Trainer
+          </Typography>
+        </Toolbar>
+      </AppBar>
+      <Router>
+           <div className="App">
+            <ul>
+              <li>
+                <Link to="/">Customers</Link>
+              </li>
+              <li>
+                <Link to="/traininglist">Trainings</Link>
+              </li>
+              <li>
+                <Link to="/calender">Calender</Link>
+              </li>
+            </ul>
+           <Routes>
+                 <Route exact path='/' element={< Customerlist />}></Route>
+                 <Route exact path='/traininglist' element={< Traininglist />}></Route>
+          </Routes>
+          </div>
+       </Router>
     </div>
   );
 }
