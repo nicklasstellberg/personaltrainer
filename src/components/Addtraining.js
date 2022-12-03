@@ -6,84 +6,83 @@ import TextField from "@mui/material/TextField";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 
-export default function Addtraining({ addTraining }) {
-  // KOMPONENTTIIN TÄYTY LUODA TILA, JOLLA SAADAAN KONTROLLOITUA
-  // DIALOGI TOIMII IKKUNANA JA AUKEAA MODAALISESTI
+function AddTraining(props) {
   const [open, setOpen] = React.useState(false);
+
   const [training, setTraining] = React.useState({
-    date: "",
-    duration: "",
-    activity: "",
-  });
+        date: '',
+        duration: '',
+        activity: '',
+        customer: props.customer 
+    })
 
   const handleClickOpen = () => {
-    console.log("PAINETTIIN LISAA TREENI");
     setOpen(true);
   };
 
   const handleClose = () => {
-    console.log("HANDLE CLOSE KUTSUTTU");
-
-    addTraining(training);
     setOpen(false);
   };
 
-  const handleCancel = () => {
-    console.log("PAINETTIIN CANCEL");
-    setOpen(false);
-  };
+  const handleSave = () => {
+      props.addTraining(training);
+      handleClose();
+  }
 
-  const inputChanged = (event) => {
-    console.log("YRITETÄÄN TALLENTAA ATTRIBUUTIN ARVOA");
-    setTraining({ ...training, [event.target.name]: event.target.value });
-  };
+  const inputChanged = e => {
+      setTraining({...training, [e.target.name]: e.target.value })
+  }
 
-  return (
-    <div>
-      <Button variant="outlined" onClick={handleClickOpen}>
-        Add training
-      </Button>
 
-      <Dialog onClose={handleClose} open={open}>
-        <DialogTitle>New training</DialogTitle>
+  const inputDateChanged = e => {
+    setTraining({...training, date: new Date(e.target.value).toISOString() })
+}
+  
+    return (
+        <div>
+        <Button variant="contained" onClick={handleClickOpen}>
+        Add Training
+        </Button>
+        <Dialog open={open} onClose={handleClose}>
+        <DialogTitle>Add Training</DialogTitle>
         <DialogContent>
-          <TextField
+
+        <TextField
+            margin="dense"
             name="date"
             value={training.date}
-            autoFocus
-            margin="dense"
-            label="Date"
-            type="text"
+            onChange= {inputDateChanged}
+            label="Date"        
             fullWidth
             variant="standard"
-            onChange={inputChanged}
           />
+        
           <TextField
+            margin="dense"
             name="duration"
-            margin="dense"
             value={training.duration}
-            label="Duration"
-            type="text"
+            onChange={inputChanged}
+            label="Duration"        
             fullWidth
             variant="standard"
-            onChange={inputChanged}
           />
           <TextField
+            margin="dense"
             name="activity"
             value={training.activity}
-            margin="dense"
-            label="Activity"
-            type="text"
+            onChange={inputChanged}
+            label="Activity"        
             fullWidth
             variant="standard"
-            onChange={inputChanged}
           />
-          <DialogActions>
-            <Button onClick={handleClose}>Save</Button>
-            <Button onClick={handleCancel}>Cancel</Button>
-          </DialogActions>
         </DialogContent>
-      </Dialog>
-    </div>
-  );
+        <DialogActions>
+          <Button onClick={handleClose}>Cancel</Button>
+          <Button onClick={handleSave}>Save</Button>
+        </DialogActions>
+        </Dialog>
+        </div>
+    );
 }
+
+export default AddTraining;

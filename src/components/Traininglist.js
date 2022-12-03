@@ -4,7 +4,6 @@ import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-material.css";
 import IconButton from "@mui/material/IconButton";
 import DeleteIcon from "@mui/icons-material/Delete";
-import Addtraining from "./Addtraining";
 import dayjs from "dayjs";
 import DialogTitle from "@mui/material/DialogTitle";
 import Dialog from "@mui/material/Dialog";
@@ -137,7 +136,6 @@ function Traininglist() {
           </Button>
         </DialogActions>
       </Dialog>
-      <Addtraining addTraining={addTraining} />
       <div style={{ height: "100%", boxSizing: "border-box" }}>
         <div
           style={{ height: 600, width: "90%" }}

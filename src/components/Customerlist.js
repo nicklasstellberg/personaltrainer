@@ -5,6 +5,7 @@ import "ag-grid-community/styles/ag-theme-material.css";
 import IconButton from "@mui/material/IconButton";
 import DeleteIcon from "@mui/icons-material/Delete";
 import Addcustomer from "./Addcustomer";
+import AddTraining from "./Addtraining";
 import EditCustomer from "./Editcustomer";
 import DialogTitle from "@mui/material/DialogTitle";
 import Dialog from "@mui/material/Dialog";
@@ -14,6 +15,7 @@ import { Button } from "@mui/material";
 function Customerlist() {
   // PITÄISI LUODA TILA, JOHON SAADAAN LISTA ASIAKKAITA
   const [customers, setCustomers] = useState([]);
+  const [trainings, setTrainings] = useState([]);
   const [open, setOpen] = useState(false);
   const [customerId, setCustomerId] = useState('');
   // PITÄISI HAKEA REST-RAJAPINNASTA ASIAKKAAT
@@ -47,6 +49,25 @@ function Customerlist() {
       }
     });
   };
+
+  const fetchTrainings = () => {
+    fetch('https://customerrest.herokuapp.com/api/trainings')
+    .then(response => response.json())
+    .then(data => setTrainings(data.content))
+    .catch(err => console.error(err))
+}
+
+  const addTraining = training => {
+    console.log(training)
+    fetch('https://customerrest.herokuapp.com/api/trainings',
+    {
+        method: 'POST',
+        headers: {'Content-type' : 'application/json'},
+        body: JSON.stringify(training)
+    })
+    .then(_ => fetchTrainings())
+    .catch(err => console.error(err))
+}
 
   const fetchCustomers = () => {
     // TÄHÄN TULEE FETCH, JOLLA HAETAAN TIEDOT
@@ -94,7 +115,7 @@ function Customerlist() {
       headerName: 'Actions',
       width: 100,
       field: 'links.0.href',
-      cellRendererFramework: params =>
+      cellRenderer: params =>
         <IconButton color="error" onClick={() => openDeleteCheck(params.value)}>
           <DeleteIcon />
         </IconButton>,
@@ -107,6 +128,14 @@ function Customerlist() {
         <EditCustomer updateCustomer={updateCustomer} params={params} />
       ),
     },
+    {
+      headerName: '',
+      sortable: false, 
+      filter: false,
+      width: 120,
+      field: 'links.0.href',
+      cellRenderer: params => <AddTraining addTraining={addTraining} customer={params.value} />
+  },
   ]);
 
   return (
