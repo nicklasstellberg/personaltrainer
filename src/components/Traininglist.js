@@ -37,9 +37,9 @@ function Traininglist() {
   const fetchTrainings = () => {
     // TÄHÄN TULEE FETCH, JOLLA HAETAAN TIEDOT
     // TREENEISTÄ
-    fetch("https://customerrest.herokuapp.com/api/trainings")
+    fetch("https://customerrest.herokuapp.com/gettrainings")
       .then((response) => response.json())
-      .then((data) => setTrainings(data.content));
+      .then((data) => setTrainings(data));
   };
 
   const deleteTraining = (link) => {
@@ -70,6 +70,7 @@ function Traininglist() {
     { field: "date", sortable: true, filter: true, valueFormatter: params  => dayjs(params.value).format('DD.MM.YYYY hh:mm a')},
     { headerName: 'Duration (min)', field: "duration", sortable: true, filter: true },
     { field: "activity", sortable: true, filter: true },
+    { headerName: 'Customer', valueGetter: params => params.data.customer.firstname + ' ' + params.data.customer.lastname, sortable: true, filter: true,},
     {
       headerName: "Actions",
       width: 100,
