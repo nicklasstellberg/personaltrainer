@@ -55,7 +55,7 @@ export default function EditTraining({ updateTraining, params }) {
       <Dialog onClose={handleClose} open={open}>
         <DialogTitle>Edit training</DialogTitle>
         <DialogContent>
-        <TextField
+          <TextField
             name="date"
             value={training.date}
             autoFocus

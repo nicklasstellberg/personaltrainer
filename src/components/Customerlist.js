@@ -17,7 +17,7 @@ function Customerlist() {
   const [customers, setCustomers] = useState([]);
   const [trainings, setTrainings] = useState([]);
   const [open, setOpen] = useState(false);
-  const [customerId, setCustomerId] = useState('');
+  const [customerId, setCustomerId] = useState("");
   // PITÄISI HAKEA REST-RAJAPINNASTA ASIAKKAAT
   // MIKÄ HOOK-FUNKTIO?
 
@@ -30,11 +30,11 @@ function Customerlist() {
   const openDeleteCheck = (url) => {
     setCustomerId(url);
     setOpen(true);
-  }
+  };
 
   const closeDeleteCheck = () => {
     setOpen(false);
-  }
+  };
 
   const addCustomer = (customer) => {
     console.log("Customerlist.js tiedoston addCustomer metodissa");
@@ -51,23 +51,22 @@ function Customerlist() {
   };
 
   const fetchTrainings = () => {
-    fetch('https://customerrest.herokuapp.com/api/trainings')
-    .then(response => response.json())
-    .then(data => setTrainings(data.content))
-    .catch(err => console.error(err))
-}
+    fetch("https://customerrest.herokuapp.com/api/trainings")
+      .then((response) => response.json())
+      .then((data) => setTrainings(data.content))
+      .catch((err) => console.error(err));
+  };
 
-  const addTraining = training => {
-    console.log(training)
-    fetch('https://customerrest.herokuapp.com/api/trainings',
-    {
-        method: 'POST',
-        headers: {'Content-type' : 'application/json'},
-        body: JSON.stringify(training)
+  const addTraining = (training) => {
+    console.log(training);
+    fetch("https://customerrest.herokuapp.com/api/trainings", {
+      method: "POST",
+      headers: { "Content-type": "application/json" },
+      body: JSON.stringify(training),
     })
-    .then(_ => fetchTrainings())
-    .catch(err => console.error(err))
-}
+      .then((_) => fetchTrainings())
+      .catch((err) => console.error(err));
+  };
 
   const fetchCustomers = () => {
     // TÄHÄN TULEE FETCH, JOLLA HAETAAN TIEDOT
@@ -79,16 +78,16 @@ function Customerlist() {
 
   const deleteCustomer = () => {
     closeDeleteCheck();
-    fetch(customerId, { method: 'DELETE' })
-    .then(response => {
-      if (response.ok) {
-        fetchCustomers();
-      } else {
-        alert('Something went wrong.');
-      }
-    })
-    .catch(err => console.error(err))
-  }
+    fetch(customerId, { method: "DELETE" })
+      .then((response) => {
+        if (response.ok) {
+          fetchCustomers();
+        } else {
+          alert("Something went wrong.");
+        }
+      })
+      .catch((err) => console.error(err));
+  };
 
   const updateCustomer = (updateCustomer, link) => {
     console.log(" UPDATE FUNKTIO");
@@ -111,14 +110,15 @@ function Customerlist() {
     { field: "city", sortable: true, filter: true },
     { field: "email", sortable: true, filter: true },
     { field: "phone", sortable: true, filter: true },
-    { 
-      headerName: 'Actions',
+    {
+      headerName: "Actions",
       width: 100,
-      field: 'links.0.href',
-      cellRenderer: params =>
+      field: "links.0.href",
+      cellRenderer: (params) => (
         <IconButton color="error" onClick={() => openDeleteCheck(params.value)}>
           <DeleteIcon />
-        </IconButton>,
+        </IconButton>
+      ),
     },
     {
       headerName: "",
@@ -129,13 +129,15 @@ function Customerlist() {
       ),
     },
     {
-      headerName: '',
-      sortable: false, 
+      headerName: "",
+      sortable: false,
       filter: false,
       width: 120,
-      field: 'links.0.href',
-      cellRenderer: params => <AddTraining addTraining={addTraining} customer={params.value} />
-  },
+      field: "links.0.href",
+      cellRenderer: (params) => (
+        <AddTraining addTraining={addTraining} customer={params.value} />
+      ),
+    },
   ]);
 
   return (
@@ -144,10 +146,10 @@ function Customerlist() {
       <Dialog open={open} onClose={closeDeleteCheck}>
         <DialogTitle>Delete customer?</DialogTitle>
         <DialogActions>
-          <Button onClick={deleteCustomer} color='primary'>
+          <Button onClick={deleteCustomer} color="primary">
             Yes
           </Button>
-          <Button onClick={closeDeleteCheck} color='primary'>
+          <Button onClick={closeDeleteCheck} color="primary">
             No
           </Button>
         </DialogActions>
