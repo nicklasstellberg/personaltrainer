@@ -68,7 +68,7 @@ function Traininglist() {
 
   const [columnDefs, setColumnDefs] = useState([
     { field: "date", sortable: true, filter: true, valueFormatter: params  => dayjs(params.value).format('DD.MM.YYYY hh:mm a')},
-    { field: "duration", sortable: true, filter: true },
+    { headerName: 'Duration (min)', field: "duration", sortable: true, filter: true },
     { field: "activity", sortable: true, filter: true },
     {
       headerName: "Actions",
