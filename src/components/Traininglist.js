@@ -5,12 +5,17 @@ import "ag-grid-community/styles/ag-theme-material.css";
 import IconButton from "@mui/material/IconButton";
 import DeleteIcon from "@mui/icons-material/Delete";
 import Addtraining from "./Addtraining";
-import EditTraining from "./Edittraining";
-import dayjs from 'dayjs';
+import dayjs from "dayjs";
+import DialogTitle from "@mui/material/DialogTitle";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import { Button } from "@mui/material";
 
 function Traininglist() {
   // PITÄISI LUODA TILA, JOHON SAADAAN LISTA TREENEJÄ
   const [trainings, setTrainings] = useState([]);
+  const [open, setOpen] = useState(false);
+  const [trainingId, setTrainingId] = useState("");
   // PITÄISI HAKEA REST-RAJAPINNASTA TREENIT
   // MIKÄ HOOK-FUNKTIO?
 
@@ -19,6 +24,15 @@ function Traininglist() {
     fetchTrainings();
     console.log(trainings);
   }, []);
+
+  const openDeleteCheck = (id) => {
+    setTrainingId(id);
+    setOpen(true);
+  };
+
+  const closeDeleteCheck = () => {
+    setOpen(false);
+  };
 
   const addTraining = (training) => {
     console.log("Traininglist.js tiedoston addTraining metodissa");
@@ -42,15 +56,19 @@ function Traininglist() {
       .then((data) => setTrainings(data));
   };
 
-  const deleteTraining = (link) => {
-    console.log("DELETE FUNKTIO");
-    if (window.confirm("Are you sure?")) {
-      fetch(link, { method: "DELETE" }).then((response) => {
+  const deleteTraining = () => {
+    closeDeleteCheck();
+    fetch(`https://customerrest.herokuapp.com/api/trainings/${trainingId}`, {
+      method: "DELETE",
+    })
+      .then((response) => {
         if (response.ok) {
           fetchTrainings();
+        } else {
+          alert("Something went wrong.");
         }
-      });
-    }
+      })
+      .catch((err) => console.error(err));
   };
 
   const updateTraining = (updateTraining, link) => {
@@ -67,32 +85,58 @@ function Traininglist() {
   };
 
   const [columnDefs, setColumnDefs] = useState([
-    { field: "date", sortable: true, filter: true, valueFormatter: params  => dayjs(params.value).format('DD.MM.YYYY hh:mm a')},
-    { headerName: 'Duration (min)', field: "duration", sortable: true, filter: true },
-    { field: "activity", sortable: true, filter: true },
-    { headerName: 'Customer', valueGetter: params => params.data.customer.firstname + ' ' + params.data.customer.lastname, sortable: true, filter: true,},
+    { headerName: "Training ID", field: "id", sortable: true, filter: true },
     {
-      headerName: "Actions",
-      width: 100,
-      field: "links.0.href",
-      cellRenderer: (params) => (
-        <IconButton color="error" onClick={() => deleteTraining(params.value)}>
-          <DeleteIcon />
-        </IconButton>
+      field: "date",
+      sortable: true,
+      filter: true,
+      valueFormatter: (params) =>
+        dayjs(params.value).format("DD.MM.YYYY hh:mm a"),
+    },
+    {
+      headerName: "Duration (min)",
+      field: "duration",
+      sortable: true,
+      filter: true,
+    },
+    {
+      field: "activity",
+      sortable: true,
+      filter: true,
+    },
+    {
+      field: "customer",
+      sortable: true,
+      filter: true,
+      cellRendererFramework: (params) => (
+        <div>
+          {params.value.firstname} {params.value.lastname}
+        </div>
       ),
     },
     {
-      headerName: "",
-      width: 100,
-      field: "links.0.href",
+      field: "actions",
       cellRenderer: (params) => (
-        <EditTraining updateTraining={updateTraining} params={params} />
+        <IconButton onClick={() => openDeleteCheck(params.data.id)}>
+          <DeleteIcon />
+        </IconButton>
       ),
     },
   ]);
 
   return (
     <>
+      <Dialog open={open} onClose={closeDeleteCheck}>
+        <DialogTitle>Are you sure?</DialogTitle>
+        <DialogActions>
+          <Button onClick={deleteTraining} color="primary">
+            Delete
+          </Button>
+          <Button onClick={closeDeleteCheck} color="primary">
+            Cancel
+          </Button>
+        </DialogActions>
+      </Dialog>
       <Addtraining addTraining={addTraining} />
       <div style={{ height: "100%", boxSizing: "border-box" }}>
         <div
