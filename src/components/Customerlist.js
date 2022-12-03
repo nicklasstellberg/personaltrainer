@@ -6,10 +6,16 @@ import IconButton from "@mui/material/IconButton";
 import DeleteIcon from "@mui/icons-material/Delete";
 import Addcustomer from "./Addcustomer";
 import EditCustomer from "./Editcustomer";
+import DialogTitle from "@mui/material/DialogTitle";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import { Button } from "@mui/material";
 
 function Customerlist() {
   // PITÄISI LUODA TILA, JOHON SAADAAN LISTA ASIAKKAITA
   const [customers, setCustomers] = useState([]);
+  const [open, setOpen] = useState(false);
+  const [customerId, setCustomerId] = useState('');
   // PITÄISI HAKEA REST-RAJAPINNASTA ASIAKKAAT
   // MIKÄ HOOK-FUNKTIO?
 
@@ -18,6 +24,15 @@ function Customerlist() {
     fetchCustomers();
     console.log(customers);
   }, []);
+
+  const openDeleteCheck = (url) => {
+    setCustomerId(url);
+    setOpen(true);
+  }
+
+  const closeDeleteCheck = () => {
+    setOpen(false);
+  }
 
   const addCustomer = (customer) => {
     console.log("Customerlist.js tiedoston addCustomer metodissa");
@@ -41,16 +56,18 @@ function Customerlist() {
       .then((data) => setCustomers(data.content));
   };
 
-  const deleteCustomer = (link) => {
-    if (window.confirm("Are you sure?")) {
-      console.log("DELETE FUNKTIO");
-      fetch(link, { method: "DELETE" }).then((response) => {
-        if (response.ok) {
-          fetchCustomers();
-        }
-      });
-    }
-  };
+  const deleteCustomer = () => {
+    closeDeleteCheck();
+    fetch(customerId, { method: 'DELETE' })
+    .then(response => {
+      if (response.ok) {
+        fetchCustomers();
+      } else {
+        alert('Something went wrong.');
+      }
+    })
+    .catch(err => console.error(err))
+  }
 
   const updateCustomer = (updateCustomer, link) => {
     console.log(" UPDATE FUNKTIO");
@@ -73,15 +90,14 @@ function Customerlist() {
     { field: "city", sortable: true, filter: true },
     { field: "email", sortable: true, filter: true },
     { field: "phone", sortable: true, filter: true },
-    {
-      headerName: "Actions",
+    { 
+      headerName: 'Actions',
       width: 100,
-      field: "links.0.href",
-      cellRenderer: (params) => (
-        <IconButton color="error" onClick={() => deleteCustomer(params.value)}>
+      field: 'links.0.href',
+      cellRendererFramework: params =>
+        <IconButton color="error" onClick={() => openDeleteCheck(params.value)}>
           <DeleteIcon />
-        </IconButton>
-      ),
+        </IconButton>,
     },
     {
       headerName: "",
@@ -96,6 +112,17 @@ function Customerlist() {
   return (
     <>
       <Addcustomer addCustomer={addCustomer} />
+      <Dialog open={open} onClose={closeDeleteCheck}>
+        <DialogTitle>Delete customer?</DialogTitle>
+        <DialogActions>
+          <Button onClick={deleteCustomer} color='primary'>
+            Yes
+          </Button>
+          <Button onClick={closeDeleteCheck} color='primary'>
+            No
+          </Button>
+        </DialogActions>
+      </Dialog>
       <div style={{ height: "100%", boxSizing: "border-box" }}>
         <div
           style={{ height: 600, width: "90%" }}

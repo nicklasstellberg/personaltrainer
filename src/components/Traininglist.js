@@ -117,7 +117,7 @@ function Traininglist() {
     {
       field: "actions",
       cellRenderer: (params) => (
-        <IconButton onClick={() => openDeleteCheck(params.data.id)}>
+        <IconButton color="error" onClick={() => openDeleteCheck(params.data.id)}>
           <DeleteIcon />
         </IconButton>
       ),
@@ -127,13 +127,13 @@ function Traininglist() {
   return (
     <>
       <Dialog open={open} onClose={closeDeleteCheck}>
-        <DialogTitle>Are you sure?</DialogTitle>
+        <DialogTitle>Delete training?</DialogTitle>
         <DialogActions>
           <Button onClick={deleteTraining} color="primary">
-            Delete
+            Yes
           </Button>
           <Button onClick={closeDeleteCheck} color="primary">
-            Cancel
+            No
           </Button>
         </DialogActions>
       </Dialog>
