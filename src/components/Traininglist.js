@@ -6,6 +6,7 @@ import IconButton from "@mui/material/IconButton";
 import DeleteIcon from "@mui/icons-material/Delete";
 import Addtraining from "./Addtraining";
 import EditTraining from "./Edittraining";
+import dayjs from 'dayjs';
 
 function Traininglist() {
   // PITÄISI LUODA TILA, JOHON SAADAAN LISTA TREENEJÄ
@@ -66,7 +67,7 @@ function Traininglist() {
   };
 
   const [columnDefs, setColumnDefs] = useState([
-    { field: "date", sortable: true, filter: true },
+    { field: "date", sortable: true, filter: true, valueFormatter: params  => dayjs(params.value).format('DD.MM.YYYY hh:mm a')},
     { field: "duration", sortable: true, filter: true },
     { field: "activity", sortable: true, filter: true },
     {
