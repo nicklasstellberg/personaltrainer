@@ -4,6 +4,7 @@ import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Customerlist from "./components/Customerlist";
 import Traininglist from "./components/Traininglist";
+import CalendarComponent from "./components/Calendar";
 import { BrowserRouter as Router,Routes, Route, Link } from 'react-router-dom';
 
 function App() {
@@ -26,12 +27,13 @@ function App() {
                 <Link to="/traininglist">Trainings</Link>
               </li>
               <li>
-                <Link to="/calender">Calender</Link>
+                <Link to="/calendar">Calendar</Link>
               </li>
             </ul>
            <Routes>
                  <Route exact path='/' element={< Customerlist />}></Route>
                  <Route exact path='/traininglist' element={< Traininglist />}></Route>
+                 <Route exact path='/calendar' element={< CalendarComponent />}></Route>
           </Routes>
           </div>
        </Router>
