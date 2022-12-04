@@ -5,6 +5,7 @@ import Typography from "@mui/material/Typography";
 import Customerlist from "./components/Customerlist";
 import Traininglist from "./components/Traininglist";
 import CalendarComponent from "./components/Calendar";
+import Statistics from "./components/Statistics";
 import { BrowserRouter as Router,Routes, Route, Link } from 'react-router-dom';
 
 function App() {
@@ -29,11 +30,15 @@ function App() {
               <li>
                 <Link to="/calendar">Calendar</Link>
               </li>
+              <li>
+                <Link to="/statistics">Statistics</Link>
+              </li>
             </ul>
            <Routes>
                  <Route exact path='/' element={< Customerlist />}></Route>
                  <Route exact path='/traininglist' element={< Traininglist />}></Route>
                  <Route exact path='/calendar' element={< CalendarComponent />}></Route>
+                 <Route exact path='/statistics' element={< Statistics />}></Route>
           </Routes>
           </div>
        </Router>
