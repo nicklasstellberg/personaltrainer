@@ -4,6 +4,13 @@ import moment from "moment";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 
 function CalendarComponent() {
+    // Start week on Monday
+    moment.locale('ko', {
+        week: {
+            dow: 1,
+            doy: 1,
+        },
+    });
   const localizer = momentLocalizer(moment);
   const [events, setEvents] = useState([]);
 
@@ -38,7 +45,7 @@ function CalendarComponent() {
       <Calendar
         localizer={localizer}
         events={events}
-        style={{ height: 500, width: "99%", margin: "auto" }}
+        style={{ height: 800, width: "99%", margin: "auto" }}
       />
     </div>
   );
