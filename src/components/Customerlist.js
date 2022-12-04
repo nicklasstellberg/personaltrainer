@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback, useRef } from "react";
 import { AgGridReact } from "ag-grid-react";
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-material.css";
@@ -18,6 +18,7 @@ function Customerlist() {
   const [trainings, setTrainings] = useState([]);
   const [open, setOpen] = useState(false);
   const [customerId, setCustomerId] = useState("");
+  const gridRef = useRef();
   // PITÄISI HAKEA REST-RAJAPINNASTA ASIAKKAAT
   // MIKÄ HOOK-FUNKTIO?
 
@@ -103,13 +104,13 @@ function Customerlist() {
   };
 
   const [columnDefs, setColumnDefs] = useState([
-    { field: "firstname", sortable: true, filter: true },
-    { field: "lastname", sortable: true, filter: true },
-    { field: "streetaddress", sortable: true, filter: true },
-    { field: "postcode", sortable: true, filter: true },
-    { field: "city", sortable: true, filter: true },
-    { field: "email", sortable: true, filter: true },
-    { field: "phone", sortable: true, filter: true },
+    { colId: 1, field: "firstname", sortable: true, filter: true },
+    { colId: 2, field: "lastname", sortable: true, filter: true },
+    { colId: 3, field: "streetaddress", sortable: true, filter: true },
+    { colId: 4, field: "postcode", sortable: true, filter: true },
+    { colId: 5, field: "city", sortable: true, filter: true },
+    { colId: 6, field: "email", sortable: true, filter: true },
+    { colId: 7, field: "phone", sortable: true, filter: true },
     {
       headerName: "Actions",
       width: 100,
@@ -140,6 +141,10 @@ function Customerlist() {
     },
   ]);
 
+  const onBtnExport = useCallback(() => {
+    gridRef.current.api.exportDataAsCsv({columnKeys: [1, 2, 3, 4, 5, 6, 7]});
+  }, []);
+
   return (
     <>
       <Addcustomer addCustomer={addCustomer} />
@@ -164,9 +169,11 @@ function Customerlist() {
             columnDefs={columnDefs}
             paginationPageSize={10}
             pagination={true}
+            ref={gridRef}
           />
         </div>
       </div>
+      <button onClick={onBtnExport}>Download CSV export file</button>
     </>
   );
 }
