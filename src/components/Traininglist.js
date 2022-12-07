@@ -11,12 +11,9 @@ import DialogActions from "@mui/material/DialogActions";
 import { Button } from "@mui/material";
 
 function Traininglist() {
-  // PITÄISI LUODA TILA, JOHON SAADAAN LISTA TREENEJÄ
   const [trainings, setTrainings] = useState([]);
   const [open, setOpen] = useState(false);
   const [trainingId, setTrainingId] = useState("");
-  // PITÄISI HAKEA REST-RAJAPINNASTA TREENIT
-  // MIKÄ HOOK-FUNKTIO?
 
   useEffect(() => {
     console.log("OLLAAN HOOK FUNKTIOSSA");
@@ -31,20 +28,6 @@ function Traininglist() {
 
   const closeDeleteCheck = () => {
     setOpen(false);
-  };
-
-  const addTraining = (training) => {
-    console.log("Traininglist.js tiedoston addTraining metodissa");
-    // REST RAJAPINTAA KÄYTTÄEN PITÄISI SAADA TREENI LISÄTTYÄ
-    fetch("https://customerrest.herokuapp.com/api/trainings", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(training),
-    }).then((response) => {
-      if (response.ok) {
-        fetchTrainings();
-      }
-    });
   };
 
   const fetchTrainings = () => {
@@ -68,19 +51,6 @@ function Traininglist() {
         }
       })
       .catch((err) => console.error(err));
-  };
-
-  const updateTraining = (updateTraining, link) => {
-    console.log(" UPDATE FUNKTIO");
-    fetch(link, {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(updateTraining),
-    }).then((response) => {
-      if (response.ok) {
-        fetchTrainings();
-      }
-    });
   };
 
   const [columnDefs, setColumnDefs] = useState([
@@ -107,6 +77,7 @@ function Traininglist() {
       field: "customer",
       sortable: true,
       filter: true,
+      // YHDISTETÄÄN ETUNIMI JA SUKUNIMI YHDEKSI KENTÄKSI
       cellRendererFramework: (params) => (
         <div>
           {params.value.firstname} {params.value.lastname}

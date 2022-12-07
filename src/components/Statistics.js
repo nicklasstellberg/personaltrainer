@@ -13,6 +13,7 @@ export default function Statistics() {
       .then((responseData) => setTrainings(responseData));
   };
 
+  // Lasketaan erillaisille treeneille kestot yhteensä
   const newData = lodash(trainings)
     .groupBy("activity")
     .map((value, key) => ({

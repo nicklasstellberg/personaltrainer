@@ -7,8 +7,6 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 
 export default function EditCustomer({ updateCustomer, params }) {
-  // KOMPONENTTIIN TÄYTY LUODA TILA, JOLLA SAADAAN KONTROLLOITUA
-  // DIALOGI TOIMII IKKUNANA JA AUKEAA MODAALISESTI
   const [open, setOpen] = React.useState(false);
   const [customer, setCustomer] = React.useState({
     firstname: "",
@@ -23,6 +21,7 @@ export default function EditCustomer({ updateCustomer, params }) {
   const handleClickOpen = () => {
     console.log("PAINETTIIN LISAA AUTO");
     setOpen(true);
+    // Asetetaan lomakkeeseen tiedot
     setCustomer({
       firstname: params.data.firstname,
       lastname: params.data.lastname,

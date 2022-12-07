@@ -13,14 +13,11 @@ import DialogActions from "@mui/material/DialogActions";
 import { Button } from "@mui/material";
 
 function Customerlist() {
-  // PITÄISI LUODA TILA, JOHON SAADAAN LISTA ASIAKKAITA
   const [customers, setCustomers] = useState([]);
   const [trainings, setTrainings] = useState([]);
   const [open, setOpen] = useState(false);
   const [customerId, setCustomerId] = useState("");
   const gridRef = useRef();
-  // PITÄISI HAKEA REST-RAJAPINNASTA ASIAKKAAT
-  // MIKÄ HOOK-FUNKTIO?
 
   useEffect(() => {
     console.log("OLLAAN HOOK FUNKTIOSSA");
@@ -104,13 +101,14 @@ function Customerlist() {
   };
 
   const [columnDefs, setColumnDefs] = useState([
-    { colId: 1, field: "firstname", sortable: true, filter: true },
-    { colId: 2, field: "lastname", sortable: true, filter: true },
-    { colId: 3, field: "streetaddress", sortable: true, filter: true },
-    { colId: 4, field: "postcode", sortable: true, filter: true },
-    { colId: 5, field: "city", sortable: true, filter: true },
-    { colId: 6, field: "email", sortable: true, filter: true },
-    { colId: 7, field: "phone", sortable: true, filter: true },
+    // Kentillle asetaan id, jotta niitä voi kutsua onBtnExportissa
+    { colId: 1, field: "firstname", sortable: true, filter: true, width: 130},
+    { colId: 2, field: "lastname", sortable: true, filter: true, width: 130 },
+    { colId: 3, field: "streetaddress", sortable: true, filter: true, width: 160 },
+    { colId: 4, field: "postcode", sortable: true, filter: true, width: 130 },
+    { colId: 5, field: "city", sortable: true, filter: true, width: 130 },
+    { colId: 6, field: "email", sortable: true, filter: true, width: 180 },
+    { colId: 7, field: "phone", sortable: true, filter: true, width: 130 },
     {
       headerName: "Actions",
       width: 100,
@@ -133,7 +131,7 @@ function Customerlist() {
       headerName: "",
       sortable: false,
       filter: false,
-      width: 120,
+      width: 170,
       field: "links.0.href",
       cellRenderer: (params) => (
         <AddTraining addTraining={addTraining} customer={params.value} />
@@ -142,6 +140,7 @@ function Customerlist() {
   ]);
 
   const onBtnExport = useCallback(() => {
+    // Otetaan vain kolumnit 1-7, jotta napit ei tule mukaan.
     gridRef.current.api.exportDataAsCsv({columnKeys: [1, 2, 3, 4, 5, 6, 7]});
   }, []);
 
@@ -173,7 +172,7 @@ function Customerlist() {
           />
         </div>
       </div>
-      <button onClick={onBtnExport}>Download CSV export file</button>
+      <Button variant="outlined" onClick={onBtnExport}>Download CSV export file</Button>
     </>
   );
 }

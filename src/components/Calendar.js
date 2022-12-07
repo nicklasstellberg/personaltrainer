@@ -24,17 +24,21 @@ function CalendarComponent() {
       .then((data) => {
         const fetchData = data;
         const trainings = [];
+        // Käydään läpi jokainen
         for (let i = 0; i < fetchData.length; i++) {
           const training = {};
           training.title = `${fetchData[i].activity} / ${fetchData[i].customer.firstname} ${fetchData[i].customer.lastname}`;
           training.start = new Date(fetchData[i].date);
+          // Lopetusaika saadaan lisäämällä kesto aloitusaikaan
           training.end = new Date(
             moment(fetchData[i].date)
               .add(fetchData[i].duration, "minutes")
               .format()
           );
+          // Lisätään käsitelty data taulukkoon.
           trainings.push(training);
         }
+        // Asetetaan tapahtumiin taulukko
         setEvents(trainings);
       })
       .catch((err) => console.error(err));
